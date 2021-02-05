@@ -1,8 +1,17 @@
 let client;
-require("./binanceClient").init(run);
+/* const Discord = require("discord.js");
+let discordClient; */
+require("./binanceClient").init((binanceClient) => {
+  /*   discordClient = new Discord.Client();
+  discordClient.once("ready", () => */ run(
+    binanceClient
+  );
+  //discordClient.login(process.env.DISCORD_TOKEN);
+});
 const placeOrders = require("./placeOrders");
 var readline = require("readline");
 const exchangeInfo = require("./exchangeInfo.json");
+
 let config;
 try {
   config = require("./config.json");
@@ -28,20 +37,31 @@ function run(res) {
     if (config) {
       calculateAndLaunch(config);
     } else {
-      rl.question("BTC investment?", async (answer) => {
+      rl.question("BTC investment?", (answer) => {
         const btcAmount = parseFloat(answer);
         if (btcAmount < balances.BTC.available) {
           rl.question(
             "Enter the values where you want to sell(separated by commas,2.0=200%):",
-            async (answer) => {
+            (answer) => {
               const sellValues = answer
                 .replace(/\s+/g, "")
                 .split(",")
                 .map((val) => parseFloat(val));
-
-              rl.question("Coin Name?", async (answer) => {
+              /*               discordClient.on("message", (msg) => {
+                calculateAndLaunch({ coin, sellValues, btcAmount });
+                if (
+                  msg.channel.id ===
+                    discordClient.channels.get("804320375344595005") &&
+                  msg.content.contains("$")
+                ) {
+                  console.log(msg.content);
+                  rl.close();
+                }
+              }); */
+              rl.question("Coin Name?", (answer) => {
                 const coin = answer.toUpperCase();
                 calculateAndLaunch({ coin, sellValues, btcAmount });
+                rl.close();
               });
             }
           );
