@@ -1,5 +1,5 @@
 const useRound = (precision) => (coinAmount) =>
-  Math.floor((coinAmount + Number.EPSILON) / precision) * precision;
+  parseFloat((Math.floor(coinAmount / precision) * precision).toPrecision(10));
 
 module.exports = ({
   marketName,
@@ -38,7 +38,7 @@ module.exports = ({
       const actualBuyPrice = cumulativeQuoteQty / executedQty;
 
       for (let sellValue of sellValues) {
-        const sellPrice = round(actualBuyPrice * sellValue);
+        const sellPrice = useRound(tickSize)(actualBuyPrice * sellValue);
         console.log("Placing sell order");
         console.log({
           cumulativeQuoteQty,

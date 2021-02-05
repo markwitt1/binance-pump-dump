@@ -21,7 +21,7 @@ const convertArrayToObject = (array, key) => {
 
 axios.get("https://api.binance.com/api/v3/exchangeInfo").then(async (res) => {
   console.log(
-    res.data.symbols.find(({ symbol }) => symbol == "JUVBTC").filters
+    res.data.symbols.find(({ symbol }) => symbol == "XRPBTC").filters
   );
   const result = convertArrayToObject(res.data.symbols, "symbol");
   await fs.writeFileSync("exchangeInfo.json", JSON.stringify(result));
