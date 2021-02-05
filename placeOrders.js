@@ -1,5 +1,5 @@
 const useRound = (precision) => (coinAmount) =>
-  Math.floor(coinAmount / precision) * precision;
+  Math.floor((coinAmount + Number.EPSILON) / precision) * precision;
 
 module.exports = ({
   marketName,
@@ -22,8 +22,9 @@ module.exports = ({
   /*   new Promise((resolve, reject) =>
     resolve({ executedQty: "139.470000", cumulativeQuoteQty: "0.03121158" })
   ) */
-  binance
-    .marketBuy(`${coin}BTC`, coinAmountRounded)
+  console.log(coinAmountRounded);
+  client
+    .marketBuy(marketName, coinAmountRounded)
     .catch((err) => {
       console.log("Getting prices");
       const errJson = err.toJSON();
@@ -32,14 +33,16 @@ module.exports = ({
     .then((res) => {
       console.log(res);
       const executedQty = parseFloat(res.executedQty);
-      const cumulativeQuoteQty = parseFloat(res.cumulativeQuoteQty);
+      const cumulativeQuoteQty = parseFloat(res.cummulativeQuoteQty);
       const quantityLimitSell = round(executedQty / sellValues.length);
       const actualBuyPrice = cumulativeQuoteQty / executedQty;
 
       for (let sellValue of sellValues) {
-        const sellPrice = parseFloat((actualBuyPrice * sellValue).toFixed(8));
+        const sellPrice = round(actualBuyPrice * sellValue);
         console.log("Placing sell order");
-        /*         console.log({
+        console.log({
+          cumulativeQuoteQty,
+          executedQty,
           marketName,
           precision,
           coinAmountRounded,
@@ -49,7 +52,7 @@ module.exports = ({
           actualBuyPrice,
           sellValue,
           quantityLimitSell,
-        }); */
+        });
         console.log(`Amount of coin:${quantityLimitSell},Price:${sellPrice}`);
         client
           .sell(marketName, quantityLimitSell, sellPrice)
