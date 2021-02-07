@@ -26,8 +26,8 @@ const rl = readline.createInterface({
 
 function run(res) {
   client = res;
-  console.log(process.env.API_KEY);
-  console.log(process.env.API_SECRET);
+  /*   console.log(process.env.API_KEY);
+  console.log(process.env.API_SECRET); */
 
   client.balance((error, balances) => {
     if (error) return console.error(error.body);
@@ -41,7 +41,7 @@ function run(res) {
         const btcAmount = parseFloat(answer);
         if (btcAmount < balances.BTC.available) {
           rl.question(
-            "Enter the values where you want to sell(separated by commas,2.0=200%):",
+            "Enter the values where you want to sell(separated by commas,2.0=100%):",
             (answer) => {
               const sellValues = answer
                 .replace(/\s+/g, "")
