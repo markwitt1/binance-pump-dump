@@ -7,4 +7,4 @@
 5. ...
 6. Profit
 
-Pull requests are welcome. Please follow me on Twitter [@markwitt_me](https://twitter.com/markwitt_me).
+Pull requests are welcome. If you have any questions, you can also contact me on Twitter [@markwitt_me](https://twitter.com/markwitt_me).
